@@ -1,0 +1,124 @@
+<x-admin-layout>
+    <x-slot name="header">
+        Data Anggota
+    </x-slot>
+
+    <div class="space-y-6">
+        <!-- Top Actions & Search -->
+        <div class="flex flex-col sm:flex-row justify-between gap-4">
+            <div class="flex-1 max-w-md">
+                <form action="{{ route('admin.members.index') }}" method="GET" class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="ti ti-search text-gray-400"></i>
+                    </div>
+                    <input type="text" name="search" value="{{ request('search') }}" class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-sm placeholder-gray-500 focus:ring-amber-500 focus:border-amber-500 dark:text-gray-200 transition-colors shadow-sm" placeholder="Cari nama, email, atau NIM/NIP...">
+                </form>
+            </div>
+            <div>
+                <a href="{{ route('admin.members.create') }}" class="inline-flex items-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-xl shadow-sm text-white bg-amber-500 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors dark:focus:ring-offset-slate-900 shadow-amber-500/30">
+                    <i class="ti ti-plus mr-2 -ml-1 text-lg"></i>
+                    Tambah Anggota
+                </a>
+            </div>
+        </div>
+
+        @if(session('success'))
+            <div class="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-start shadow-sm">
+                <i class="ti ti-check w-5 h-5 mr-3 mt-0.5"></i>
+                <p>{{ session('success') }}</p>
+            </div>
+        @endif
+        
+        @if(session('error'))
+            <div class="p-4 rounded-xl bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/20 text-rose-600 dark:text-rose-400 flex items-start shadow-sm">
+                <i class="ti ti-alert-circle w-5 h-5 mr-3 mt-0.5"></i>
+                <p>{{ session('error') }}</p>
+            </div>
+        @endif
+
+        <!-- Table -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-700">
+                    <thead class="bg-gray-50 dark:bg-slate-800/50">
+                        <tr>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Anggota</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">NIM/NIP & Kontak</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                            <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-slate-700 bg-white dark:bg-slate-800">
+                        @forelse($members as $member)
+                        <tr class="hover:bg-gray-50/50 dark:hover:bg-slate-700/50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10">
+                                        <img class="h-10 w-10 rounded-full border border-gray-200 dark:border-slate-600" src="https://ui-avatars.com/api/?name={{ urlencode($member->name) }}&color=F59E0B&background=FEF3C7" alt="">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $member->name }}</div>
+                                        <div class="text-sm text-gray-500 dark:text-slate-400">{{ $member->email }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $member->student_id ?: '-' }}</div>
+                                <div class="text-sm text-gray-500 dark:text-slate-400">{{ $member->phone ?: 'Belum ada no HP' }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                @if($member->status === 'active')
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+                                        Aktif
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-rose-50 text-rose-600 border-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1.5"></span>
+                                        Suspended
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex items-center justify-end gap-1.5">
+                                    <a href="{{ route('admin.members.show', $member->id) }}" class="p-2 text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-500/10 transition-colors" title="Detail">
+                                        <i class="ti ti-eye text-xl"></i>
+                                    </a>
+                                    <a href="{{ route('admin.members.edit', $member->id) }}" class="p-2 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors" title="Edit">
+                                        <i class="ti ti-edit text-xl"></i>
+                                    </a>
+                                    <form action="{{ route('admin.members.destroy', $member->id) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus anggota ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="p-2 text-gray-400 hover:text-rose-600 dark:hover:text-rose-400 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors" title="Hapus">
+                                            <i class="ti ti-trash text-xl"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-16 text-center text-gray-500 dark:text-slate-400">
+                                <div class="flex flex-col items-center justify-center">
+                                    <div class="w-20 h-20 bg-gray-50 dark:bg-slate-800/80 rounded-full flex items-center justify-center mb-4 border border-gray-100 dark:border-slate-700">
+                                        <i class="ti ti-users text-4xl text-gray-400 dark:text-slate-500"></i>
+                                    </div>
+                                    <p class="text-lg font-semibold text-gray-900 dark:text-white mb-1">Tidak ada data anggota</p>
+                                    <p class="text-sm">Silakan tambah anggota baru atau ubah kata kunci pencarian.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            
+            @if($members->hasPages())
+            <div class="px-6 py-4 border-t border-gray-100 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50">
+                {{ $members->links() }}
+            </div>
+            @endif
+        </div>
+    </div>
+</x-admin-layout>

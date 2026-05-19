@@ -8,18 +8,39 @@ use Illuminate\Http\Request;
 
 class FineController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.fines.index');
+        $status = $request->input('status');
+        $fines = Fine::with(['user', 'borrowing.book'])
+            ->when($status === 'paid', function ($q) {
+                $q->where('status', 'paid');
+            })
+            ->when($status === 'unpaid', function ($q) {
+                $q->where('status', 'unpaid');
+            })
+            ->latest()
+            ->paginate(15);
+
+        return view('admin.fines.index', compact('fines', 'status'));
     }
 
     public function show($id)
     {
-        return view('admin.fines.show');
+        $fine = Fine::with(['user', 'borrowing.book'])->findOrFail($id);
+        return view('admin.fines.show', compact('fine'));
     }
 
     public function markPaid(Fine $fine)
     {
-        //
+        if ($fine->status === 'paid') {
+            return back()->with('error', 'Denda ini sudah lunas.');
+        }
+
+        $fine->update([
+            'status' => 'paid',
+            'paid_at' => now(),
+        ]);
+
+        return back()->with('success', 'Denda berhasil ditandai sebagai lunas.');
     }
 }

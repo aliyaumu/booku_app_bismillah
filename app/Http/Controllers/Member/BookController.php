@@ -1,25 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Member;
 
+use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Category;
-use App\Models\User;
-use App\Models\Borrowing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class PublicController extends Controller
+class BookController extends Controller
 {
-    public function landing()
-    {
-        $featuredBooks = Book::with('category')->latest()->take(8)->get();
-        $totalBooks = Book::count();
-        $totalMembers = User::where('role', 'member')->count();
-        $totalBorrowings = Borrowing::count();
-        return view('public.landing', compact('featuredBooks', 'totalBooks', 'totalMembers', 'totalBorrowings'));
-    }
-
-    public function catalog(Request $request)
+    public function index(Request $request)
     {
         $search = $request->input('search');
         $categoryId = $request->input('category');
@@ -39,7 +30,7 @@ class PublicController extends Controller
 
         $categories = Category::orderBy('name')->get();
 
-        return view('public.catalog', compact('books', 'categories', 'search', 'categoryId'));
+        return view('member.books.index', compact('books', 'categories', 'search', 'categoryId'));
     }
 
     public function show($slug)
@@ -50,7 +41,16 @@ class PublicController extends Controller
             ->where('id', '!=', $book->id)
             ->take(4)
             ->get();
+            
+        // Check if book is in wishlist
+        $inWishlist = Auth::user()->wishlists()->where('book_id', $book->id)->exists();
+        
+        // Check active borrowing
+        $activeBorrowing = Auth::user()->borrowings()
+            ->where('book_id', $book->id)
+            ->whereIn('status', ['pending', 'approved', 'borrowed', 'overdue', 'return_requested'])
+            ->first();
 
-        return view('public.book', compact('book', 'relatedBooks'));
+        return view('member.books.show', compact('book', 'relatedBooks', 'inWishlist', 'activeBorrowing'));
     }
 }
