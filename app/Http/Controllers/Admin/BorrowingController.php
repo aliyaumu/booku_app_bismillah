@@ -55,9 +55,6 @@ class BorrowingController extends Controller
 
         $borrowing->book->decrement('available_stock');
 
-        // Notify member
-        $borrowing->user->notify(new \App\Notifications\BorrowingApproved($borrowing));
-
         return back()->with('success', 'Permintaan pinjam berhasil disetujui. Buku dapat diambil oleh anggota.');
     }
 
@@ -73,7 +70,6 @@ class BorrowingController extends Controller
         ]);
 
         // Notify member
-        $borrowing->user->notify(new \App\Notifications\BorrowingRejected($borrowing));
 
         return back()->with('success', 'Permintaan pinjam berhasil ditolak.');
     }

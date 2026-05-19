@@ -68,7 +68,6 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
 // Member Routes (Auth & Member role required)
 Route::prefix('member')->middleware(['auth', 'member'])->name('member.')->group(function () {
     Route::get('/dashboard', [MemberDashboard::class, 'index'])->name('dashboard');
-    Route::patch('/notifications/read', [MemberDashboard::class, 'markNotificationsRead'])->name('notifications.markRead');
 
     // Catalog browsing
     Route::get('/books', [MemberCatalog::class, 'index'])->name('books.index');
@@ -76,7 +75,7 @@ Route::prefix('member')->middleware(['auth', 'member'])->name('member.')->group(
 
     // Borrowing Operations
     Route::post('/books/{book}/borrow', [MemberBorrowing::class, 'store'])->name('books.borrow');
-    Route::patch('/borrowings/{borrowing}/return', [MemberBorrowing::class, 'requestReturn'])->name('borrowings.return');
+    Route::patch('/borrowings/{borrowing}/return', [MemberBorrowing::class, 'requestReturn'])->name('borrowings.requestReturn');
     Route::get('/borrowings', [MemberBorrowing::class, 'index'])->name('borrowings.index');
     Route::get('/history', [MemberBorrowing::class, 'history'])->name('history');
 

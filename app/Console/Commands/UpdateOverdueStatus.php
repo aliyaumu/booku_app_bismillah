@@ -31,20 +31,11 @@ class UpdateOverdueStatus extends Command
         $today = now()->startOfDay();
 
         // 1. Update status to overdue for borrowings that are borrowed and passed their due_date
-        $borrowingsToOverdue = Borrowing::where('status', 'borrowed')
+        $updatedCount = Borrowing::where('status', 'borrowed')
             ->whereDate('due_date', '<', $today)
-            ->get();
+            ->update(['status' => 'overdue']);
 
-        foreach ($borrowingsToOverdue as $borrowing) {
-            $borrowing->update(['status' => 'overdue']);
-            try {
-                $borrowing->user->notify(new \App\Notifications\BorrowingOverdue($borrowing));
-            } catch (\Exception $e) {
-                $this->error("Failed to notify user for overdue borrowing ID: {$borrowing->id}");
-            }
-        }
-
-        $this->info("Updated " . $borrowingsToOverdue->count() . " borrowing(s) to overdue status.");
+        $this->info("Updated {$updatedCount} borrowing(s) to overdue status.");
 
         // 2. Calculate or update fines for all overdue borrowings
         $overdueBorrowings = Borrowing::where('status', 'overdue')
@@ -87,20 +78,5 @@ class UpdateOverdueStatus extends Command
         }
 
         $this->info("Fines calculation complete: {$finesCreated} created, {$finesUpdated} updated.");
-
-        // 3. Send due reminder H-1
-        $dueTomorrow = Borrowing::where('status', 'borrowed')
-            ->whereDate('due_date', $today->copy()->addDay())
-            ->get();
-
-        foreach ($dueTomorrow as $borrowing) {
-            try {
-                $borrowing->user->notify(new \App\Notifications\BorrowingDueReminder($borrowing));
-            } catch (\Exception $e) {
-                $this->error("Failed to notify user for H-1 reminder borrowing ID: {$borrowing->id}");
-            }
-        }
-
-        $this->info("H-1 reminders sent to " . $dueTomorrow->count() . " user(s).");
     }
 }

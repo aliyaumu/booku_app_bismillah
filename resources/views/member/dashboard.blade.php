@@ -40,34 +40,7 @@
             </div>
         </div>
 
-        <!-- Notifications -->
-        @if($notifications->count() > 0)
-        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white heading-font flex items-center gap-2">
-                    <i class="ti ti-bell-filled text-amber-500"></i> Notifikasi Baru
-                </h3>
-                <form action="{{ route('member.notifications.markRead') }}" method="POST">
-                    @csrf
-                    @method('PATCH')
-                    <button type="submit" class="text-xs font-semibold text-amber-600 hover:text-amber-700 dark:text-amber-400">Tandai semua dibaca</button>
-                </form>
-            </div>
-            <div class="space-y-3">
-                @foreach($notifications as $notif)
-                    <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/80 transition-colors">
-                        <div class="w-8 h-8 rounded-full bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 mt-0.5">
-                            <i class="ti ti-info-circle-filled text-lg"></i>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ $notif->data['message'] ?? '' }}</p>
-                            <span class="text-[10px] text-gray-400 mt-1 block">{{ $notif->created_at->diffForHumans() }}</span>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-        @endif
+
 
         <!-- Active Borrowings Section -->
         @if($activeBorrowings->count() > 0)

@@ -18,14 +18,7 @@ class DashboardController extends Controller
         $unpaidFines = $user->fines->where('status', 'unpaid')->sum('total_amount');
 
         $latestBooks = Book::with('category')->latest()->take(6)->get();
-        $notifications = $user->unreadNotifications()->take(5)->get();
 
-        return view('member.dashboard', compact('activeBorrowings', 'unpaidFines', 'latestBooks', 'notifications'));
-    }
-
-    public function markNotificationsRead()
-    {
-        Auth::user()->unreadNotifications->markAsRead();
-        return back()->with('success', 'Semua notifikasi ditandai sebagai dibaca.');
+        return view('member.dashboard', compact('activeBorrowings', 'unpaidFines', 'latestBooks'));
     }
 }
