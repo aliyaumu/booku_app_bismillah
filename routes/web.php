@@ -68,6 +68,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
 // Member Routes (Auth & Member role required)
 Route::prefix('member')->middleware(['auth', 'member'])->name('member.')->group(function () {
     Route::get('/dashboard', [MemberDashboard::class, 'index'])->name('dashboard');
+    Route::patch('/notifications/read', [MemberDashboard::class, 'markNotificationsRead'])->name('notifications.markRead');
 
     // Catalog browsing
     Route::get('/books', [MemberCatalog::class, 'index'])->name('books.index');
