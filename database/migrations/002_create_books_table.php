@@ -24,7 +24,6 @@ return new class extends Migration {
             $table->unsignedSmallInteger('total_stock')->default(1);
             $table->unsignedSmallInteger('available_stock')->default(1);
             $table->unsignedInteger('borrow_count')->default(0)->comment('Akumulasi jumlah peminjaman');
-            $table->string('qr_code_path')->nullable()->comment('Path file QR code SVG');
             $table->timestamps();
             $table->softDeletes();
 
