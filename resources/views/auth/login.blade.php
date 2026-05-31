@@ -18,17 +18,27 @@
         </div>
 
         <!-- Password -->
-        <div class="mt-5">
-            <x-input-label for="password" :value="__('Password')" class="font-semibold text-slate-700 dark:text-slate-300" />
+<div class="mt-5">
+    <x-input-label for="password" :value="__('Password')" class="font-semibold text-slate-700 dark:text-slate-300" />
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+    <div class="relative mt-1">
+        <x-text-input id="password" class="block w-full pr-10"
+                        type="password"
+                        name="password"
+                        required autocomplete="current-password" />
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+        <button
+            type="button"
+            onclick="togglePassword()"
+            class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors focus:outline-none"
+            aria-label="Toggle password visibility"
+        >
+            <i id="password-icon" class="ti ti-eye text-xl"></i>
+        </button>
+    </div>
 
+    <x-input-error :messages="$errors->get('password')" class="mt-2" />
+</div>
         <!-- Remember Me -->
         <div class="flex items-center justify-between mt-5">
             <label for="remember_me" class="inline-flex items-center cursor-pointer">
@@ -57,3 +67,13 @@
         </p>
     </div>
 </x-guest-layout>
+<script>
+    function togglePassword() {
+        const input = document.getElementById('password');
+        const icon = document.getElementById('password-icon');
+        const isHidden = input.type === 'password';
+
+        input.type = isHidden ? 'text' : 'password';
+        icon.className = isHidden ? 'ti ti-eye-off text-xl' : 'ti ti-eye text-xl';
+    }
+</script>
