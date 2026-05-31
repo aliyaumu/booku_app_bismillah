@@ -17,17 +17,13 @@ class Review extends Model
 {
     use HasFactory;
 
-    /**
-     * Relasi ke User (Anggota).
-     */
+    # Relasi ke user (angggota)
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Relasi ke Book (Buku).
-     */
+    # Relasi ke book (buku)
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);
