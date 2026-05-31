@@ -9,35 +9,25 @@ use Carbon\Carbon;
 
 class UpdateOverdueStatus extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
+    # The name and Signature of the console command
     protected $signature = 'booku:update-overdue';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
+    # The console command description
     protected $description = 'Update borrowings that passed their due date to overdue and calculate fines';
 
-    /**
-     * Execute the console command.
-     */
+    # Function handle
     public function handle()
     {
         $today = now()->startOfDay();
 
-        // 1. Update status to overdue for borrowings that are borrowed and passed their due_date
+        // 1. Update status to overdue for borrowings that are borrowed and passed their due date
         $updatedCount = Borrowing::where('status', 'borrowed')
             ->whereDate('due_date', '<', $today)
             ->update(['status' => 'overdue']);
 
         $this->info("Updated {$updatedCount} borrowing(s) to overdue status.");
 
-        // 2. Calculate or update fines for all overdue borrowings
+        // 2. Calculate or update fines for all over_due borrowings
         $overdueBorrowings = Borrowing::where('status', 'overdue')
             ->whereNull('returned_date')
             ->get();

@@ -12,9 +12,7 @@ class Category extends Model
 {
     use HasFactory;
 
-    /**
-     * Relasi ke Book.
-     */
+    # Relasi ke book
     public function books(): HasMany
     {
         return $this->hasMany(Book::class);

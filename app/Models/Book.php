@@ -27,33 +27,25 @@ class Book extends Model
 {
     use HasFactory, SoftDeletes;
 
-    /**
-     * Relasi ke Category.
-     */
+    # Relasi ke Category
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
-
-    /**
-     * Relasi ke Borrowing (Peminjaman).
-     */
+    
+    # Relasi ke Borrowing (Peminjaman)
     public function borrowings(): HasMany
     {
         return $this->hasMany(Borrowing::class);
     }
 
-    /**
-     * Relasi ke Review (Ulasan).
-     */
+    # Relasi ke Review (Ulasan)
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
     }
 
-    /**
-     * Relasi ke Wishlist.
-     */
+    # Relasi ke Wishlist
     public function wishlists(): HasMany
     {
         return $this->hasMany(Wishlist::class);
