@@ -23,9 +23,7 @@ class Borrowing extends Model
 {
     use HasFactory;
 
-    /**
-     * Get the attributes that should be cast.
-     */
+    # Get the attributes that should be cast
     protected function casts(): array
     {
         return [
@@ -35,25 +33,19 @@ class Borrowing extends Model
         ];
     }
 
-    /**
-     * Relasi ke User (Anggota).
-     */
+    # Relasi ke user (Anggota)
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Relasi ke Book (Buku).
-     */
+    # relasi ke book (buku)
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);
     }
 
-    /**
-     * Relasi ke Fine (Denda).
-     */
+    # Relasi ke fine (denda)
     public function fine(): HasOne
     {
         return $this->hasOne(Fine::class);
