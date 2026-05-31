@@ -15,14 +15,10 @@ use Illuminate\Notifications\Notifiable;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
+
     use HasFactory, Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+  
     protected function casts(): array
     {
         return [
@@ -31,33 +27,25 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Relasi ke Borrowing (Peminjaman).
-     */
+    # Relasi ke borrowing (peminjaman)
     public function borrowings(): HasMany
     {
         return $this->hasMany(Borrowing::class);
     }
 
-    /**
-     * Relasi ke Fine (Denda).
-     */
+    # Relasi ke Fine (Denda)
     public function fines(): HasMany
     {
         return $this->hasMany(Fine::class);
     }
 
-    /**
-     * Relasi ke Review (Ulasan).
-     */
+    # Relasi ke Riview (ulasan)
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
     }
 
-    /**
-     * Relasi ke Wishlist.
-     */
+    # Relasi ke wishlist
     public function wishlists(): HasMany
     {
         return $this->hasMany(Wishlist::class);
