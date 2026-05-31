@@ -21,9 +21,7 @@ class Fine extends Model
 {
     use HasFactory;
 
-    /**
-     * Get the attributes that should be cast.
-     */
+    # Get the attributes that should be cast
     protected function casts(): array
     {
         return [
@@ -31,17 +29,13 @@ class Fine extends Model
         ];
     }
 
-    /**
-     * Relasi ke Borrowing.
-     */
+    # Relasi ke Borrowing
     public function borrowing(): BelongsTo
     {
         return $this->belongsTo(Borrowing::class);
     }
 
-    /**
-     * Relasi ke User (Anggota).
-     */
+    # Relasi ke user (anggota)
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
