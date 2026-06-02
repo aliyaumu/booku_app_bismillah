@@ -55,7 +55,7 @@
                     <div class="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
                         <div class="w-16 h-24 bg-gray-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0 border border-gray-200 dark:border-slate-600">
                             @if($borrowing->book->cover_image)
-                                <img src="{{ asset('storage/'.$borrowing->book->cover_image) }}" alt="{{ $borrowing->book->title }}" class="w-full h-full object-cover">
+                                <img src="{{ $borrowing->book->cover_image_url }}" alt="{{ $borrowing->book->title }}" class="w-full h-full object-cover">
                             @else
                                 <div class="w-full h-full flex items-center justify-center"><i class="ti ti-book text-gray-400"></i></div>
                             @endif
@@ -103,7 +103,7 @@
                     <a href="{{ route('member.books.show', $book->slug) }}" class="group block">
                         <div class="aspect-[2/3] w-full rounded-xl bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 overflow-hidden mb-3 relative shadow-sm group-hover:shadow-md transition-all group-hover:-translate-y-1">
                             @if($book->cover_image)
-                                <img src="{{ asset('storage/'.$book->cover_image) }}" alt="{{ $book->title }}" class="w-full h-full object-cover">
+                                <img src="{{ $book->cover_image_url }}" alt="{{ $book->title }}" class="w-full h-full object-cover">
                             @else
                                 <div class="w-full h-full flex items-center justify-center">
                                     <i class="ti ti-photo-off text-4xl text-gray-300 dark:text-slate-600"></i>

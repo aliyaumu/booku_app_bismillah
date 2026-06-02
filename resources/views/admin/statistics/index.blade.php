@@ -26,7 +26,7 @@
                             </div>
                             <div class="w-10 h-14 bg-gray-100 dark:bg-slate-700 rounded overflow-hidden shrink-0">
                                 @if($item->book->cover_image)
-                                    <img src="{{ asset('storage/'.$item->book->cover_image) }}" class="w-full h-full object-cover">
+                                    <img src="{{ $item->book->cover_image_url }}" class="w-full h-full object-cover">
                                 @else
                                     <div class="w-full h-full flex items-center justify-center"><i class="ti ti-book text-gray-400"></i></div>
                                 @endif

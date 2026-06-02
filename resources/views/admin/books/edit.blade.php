@@ -85,6 +85,13 @@
                         <textarea id="synopsis" name="synopsis" rows="4" class="block w-full rounded-xl border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-white shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm py-2.5 transition-colors">{{ old('synopsis', $book->synopsis) }}</textarea>
                     </div>
 
+                    <!-- Cover Image URL -->
+                    <div class="md:col-span-2">
+                        <label for="cover_url" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Cover URL (Opsional)</label>
+                        <input type="url" name="cover_url" id="cover_url" value="{{ old('cover_url', Str::startsWith($book->cover_image, ['http://', 'https://']) ? $book->cover_image : '') }}" placeholder="https://contoh.com/gambar.jpg" class="block w-full rounded-xl border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-900 dark:text-white shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm py-2.5 transition-colors">
+                        <p class="mt-1.5 text-xs text-gray-500 dark:text-slate-400">Masukkan link gambar jika tidak ingin mengupload manual. Upload manual akan diprioritaskan.</p>
+                    </div>
+
                     <!-- Cover Image -->
                     <div class="md:col-span-2">
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Cover Buku</label>
@@ -92,7 +99,7 @@
                         @if($book->cover_image)
                             <div class="mb-4">
                                 <p class="text-xs text-gray-500 dark:text-slate-400 mb-2">Cover saat ini:</p>
-                                <img src="{{ asset('storage/'.$book->cover_image) }}" alt="Cover" class="w-32 h-44 object-cover rounded-lg border border-gray-200 dark:border-slate-600 shadow-sm">
+                                <img src="{{ $book->cover_image_url }}" alt="Cover" class="w-32 h-44 object-cover rounded-lg border border-gray-200 dark:border-slate-600 shadow-sm">
                             </div>
                         @endif
 

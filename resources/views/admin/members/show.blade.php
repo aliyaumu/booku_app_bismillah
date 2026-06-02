@@ -119,7 +119,7 @@
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-12 w-8 bg-gray-100 dark:bg-slate-700 rounded flex items-center justify-center overflow-hidden border border-gray-200 dark:border-slate-600">
                                             @if($borrowing->book->cover_image)
-                                                <img class="h-full w-full object-cover" src="{{ asset('storage/'.$borrowing->book->cover_image) }}" alt="{{ $borrowing->book->title }}">
+                                                <img class="h-full w-full object-cover" src="{{ $borrowing->book->cover_image_url }}" alt="{{ $borrowing->book->title }}">
                                             @else
                                                 <i class="ti ti-book text-gray-400"></i>
                                             @endif

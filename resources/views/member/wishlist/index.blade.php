@@ -40,7 +40,7 @@
                         <a href="{{ route('member.books.show', $wishlist->book->slug) }}" class="block flex-1">
                             <div class="aspect-[2/3] w-full rounded-xl bg-gray-100 dark:bg-slate-700 overflow-hidden mb-3 relative">
                                 @if($wishlist->book->cover_image)
-                                    <img src="{{ asset('storage/'.$wishlist->book->cover_image) }}" alt="{{ $wishlist->book->title }}" class="w-full h-full object-cover">
+                                    <img src="{{ $wishlist->book->cover_image_url }}" alt="{{ $wishlist->book->title }}" class="w-full h-full object-cover">
                                 @else
                                     <div class="w-full h-full flex items-center justify-center">
                                         <i class="ti ti-photo-off text-4xl text-gray-300 dark:text-slate-500"></i>

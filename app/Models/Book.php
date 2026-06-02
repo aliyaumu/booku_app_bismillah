@@ -50,4 +50,18 @@ class Book extends Model
     {
         return $this->hasMany(Wishlist::class);
     }
+
+    # Accessor for cover image URL
+    public function getCoverImageUrlAttribute()
+    {
+        if (!$this->cover_image) {
+            return null;
+        }
+
+        if (\Illuminate\Support\Str::startsWith($this->cover_image, ['http://', 'https://'])) {
+            return $this->cover_image;
+        }
+
+        return asset('storage/' . $this->cover_image);
+    }
 }

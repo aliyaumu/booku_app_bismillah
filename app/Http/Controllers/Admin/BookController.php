@@ -43,6 +43,7 @@ class BookController extends Controller
             'total_stock' => 'required|integer|min:1',
             'synopsis' => 'nullable|string',
             'cover_image' => 'nullable|image|max:2048',
+            'cover_url' => 'nullable|url|max:2048',
         ]);
 
         $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(5);
@@ -51,7 +52,10 @@ class BookController extends Controller
         if ($request->hasFile('cover_image')) {
             $path = $request->file('cover_image')->store('books/covers', 'public');
             $validated['cover_image'] = $path;
+        } elseif ($request->filled('cover_url')) {
+            $validated['cover_image'] = $request->input('cover_url');
         }
+        unset($validated['cover_url']);
 
         Book::create($validated);
 
@@ -82,6 +86,7 @@ class BookController extends Controller
             'total_stock' => 'required|integer|min:0',
             'synopsis' => 'nullable|string',
             'cover_image' => 'nullable|image|max:2048',
+            'cover_url' => 'nullable|url|max:2048',
         ]);
 
         // Adjust available stock if total stock changes
@@ -92,12 +97,18 @@ class BookController extends Controller
         }
 
         if ($request->hasFile('cover_image')) {
-            if ($book->cover_image) {
+            if ($book->cover_image && !\Illuminate\Support\Str::startsWith($book->cover_image, ['http://', 'https://'])) {
                 Storage::disk('public')->delete($book->cover_image);
             }
             $path = $request->file('cover_image')->store('books/covers', 'public');
             $validated['cover_image'] = $path;
+        } elseif ($request->filled('cover_url')) {
+            if ($book->cover_image && !\Illuminate\Support\Str::startsWith($book->cover_image, ['http://', 'https://'])) {
+                Storage::disk('public')->delete($book->cover_image);
+            }
+            $validated['cover_image'] = $request->input('cover_url');
         }
+        unset($validated['cover_url']);
 
         if ($validated['title'] !== $book->title) {
             $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(5);
@@ -110,7 +121,7 @@ class BookController extends Controller
 
     public function destroy(Book $book)
     {
-        if ($book->cover_image) {
+        if ($book->cover_image && !\Illuminate\Support\Str::startsWith($book->cover_image, ['http://', 'https://'])) {
             Storage::disk('public')->delete($book->cover_image);
         }
         $book->delete();

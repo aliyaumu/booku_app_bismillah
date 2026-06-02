@@ -89,7 +89,7 @@
                         <!-- Cover Wrapper -->
                         <div class="aspect-[3/4] bg-gray-100 dark:bg-slate-700 rounded-xl overflow-hidden mb-3 relative">
                             @if($book->cover_image)
-                                <img src="{{ asset('storage/'.$book->cover_image) }}" alt="{{ $book->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                <img src="{{ $book->cover_image_url }}" alt="{{ $book->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             @else
                                 <div class="w-full h-full flex flex-col items-center justify-center text-gray-400 dark:text-slate-500 gap-1">
                                     <i class="ti ti-book text-3xl"></i>

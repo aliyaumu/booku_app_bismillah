@@ -11,7 +11,7 @@
                 <div class="flex-shrink-0 w-full md:w-64 flex flex-col items-center">
                     <div class="w-48 md:w-full aspect-[2/3] bg-gray-100 dark:bg-slate-700 rounded-xl overflow-hidden shadow-sm border border-gray-200 dark:border-slate-600 mb-4 flex items-center justify-center">
                         @if($book->cover_image)
-                            <img src="{{ asset('storage/'.$book->cover_image) }}" alt="{{ $book->title }}" class="w-full h-full object-cover">
+                            <img src="{{ $book->cover_image_url }}" alt="{{ $book->title }}" class="w-full h-full object-cover">
                         @else
                             <i class="ti ti-photo-off text-6xl text-gray-300 dark:text-slate-500"></i>
                         @endif

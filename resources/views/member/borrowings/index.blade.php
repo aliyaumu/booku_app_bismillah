@@ -52,7 +52,7 @@
                             <div class="w-24 shrink-0 mx-auto sm:mx-0">
                                 <div class="aspect-[2/3] w-full rounded-lg bg-gray-100 dark:bg-slate-700 overflow-hidden shadow-sm border border-gray-200 dark:border-slate-600">
                                     @if($borrowing->book->cover_image)
-                                        <img src="{{ asset('storage/'.$borrowing->book->cover_image) }}" alt="{{ $borrowing->book->title }}" class="w-full h-full object-cover">
+                                        <img src="{{ $borrowing->book->cover_image_url }}" alt="{{ $borrowing->book->title }}" class="w-full h-full object-cover">
                                     @else
                                         <div class="w-full h-full flex items-center justify-center"><i class="ti ti-book text-gray-400 text-2xl"></i></div>
                                     @endif
